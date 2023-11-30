@@ -13,14 +13,24 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import tradeprocessorrefactor.TradeRecord;
 
 /**
  *
  * @author Sam
  */
 public class TradeProcessor {
+    /*
+    1. Reading all the rows from the csv files
+    2. Validating each row
+    3. Make a new TradeRecord from the validated and parsed data
+    4. Setting up database
+    5. Inserting trades into database
+    */
+    
     public void ProcessTrades()
             throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
+        // Part 1
         System.out.println("Start");
         BufferedReader myReader = new BufferedReader(new FileReader("trades.csv"));
         List<String> lines = new ArrayList<>();
@@ -30,7 +40,8 @@ public class TradeProcessor {
         }
 
         List<TradeRecord> trades = new ArrayList<>();
-
+        
+        // Part 2
         lines.forEach(line -> {
             String[] fields = line.split(",");
             if (fields.length != 3) {
@@ -54,7 +65,8 @@ public class TradeProcessor {
             } catch (Exception e) {
                 System.out.println("Warning: Trade price not a valid decimal");
             }
-
+            
+            // Part 3
             String sourceCurrencyCode = fields[0].substring(0, 3);
             String destinationCurrencyCode = fields[0].substring(3, 6);
 
@@ -62,6 +74,7 @@ public class TradeProcessor {
             trades.add(trade);
         });
 
+           // Part 4
         Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
         String DB_URL = "jdbc:mysql://localhost/trades";
         String USER = "aadp2023";
@@ -80,6 +93,7 @@ public class TradeProcessor {
             stmt.executeUpdate(sql);
             System.out.println("Created table in given database...");
 
+               // Part 5
             for (TradeRecord trade : trades) {
                 sql = String.format(
                         "INSERT INTO trades (sourceCurrencyCode, destinationCurrencyCode, tradeAmount, tradePrice) VALUES ('%s', '%s', %d, %f);",
@@ -91,19 +105,5 @@ public class TradeProcessor {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-    }
-}
-
-public class TradeRecord {
-    String sourceCurrencyCode;
-    String destinationCurrencyCode;
-    int tradeAmount;
-    double tradePrice;
-
-    public TradeRecord(String sourceCurrencyCode, String destinationCurrencyCode, int tradeAmount, double tradePrice) {
-        this.sourceCurrencyCode = sourceCurrencyCode;
-        this.destinationCurrencyCode = destinationCurrencyCode;
-        this.tradeAmount = tradeAmount;
-        this.tradePrice = tradePrice;
     }
 }
