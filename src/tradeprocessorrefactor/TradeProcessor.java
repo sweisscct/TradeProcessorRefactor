@@ -16,6 +16,7 @@ import java.util.List;
 import tradeprocessorrefactor.CSVReader;
 import tradeprocessorrefactor.DataInput;
 import tradeprocessorrefactor.TradeRecord;
+import tradeprocessorrefactor.Validator;
 
 /**
  *
@@ -41,29 +42,11 @@ public class TradeProcessor {
         List<TradeRecord> trades = new ArrayList<>();
         
         // Part 2
-        lines.forEach(line -> {
+//        lines.forEach(line -> {
+        for (String line : lines) {
             String[] fields = line.split(",");
-            if (fields.length != 3) {
-                System.out.println("Warning: Incorrect number of fields");
-            }
-
-            if (fields[0].length() != 6) {
-                System.out.println("Warning: Trade currencies malformed");
-            }
-
-            int tradeAmount = -1;
-            try {
-                tradeAmount = Integer.parseInt(fields[1]);
-            } catch (Exception e) {
-                System.out.println("Warning: Trade amount not a valid integer");
-            }
-
-            double tradePrice = -1;
-            try {
-                tradePrice = Double.parseDouble(fields[2]);
-            } catch (Exception e) {
-                System.out.println("Warning: Trade price not a valid decimal");
-            }
+            Validator validator = new Validator();
+            if (!validator.validateDataInput(fields)) continue;
             
             // Part 3
             String sourceCurrencyCode = fields[0].substring(0, 3);
@@ -71,7 +54,8 @@ public class TradeProcessor {
 
             TradeRecord trade = new TradeRecord(sourceCurrencyCode, destinationCurrencyCode, tradeAmount, tradePrice);
             trades.add(trade);
-        });
+//        });
+        }
 
            // Part 4
         Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
