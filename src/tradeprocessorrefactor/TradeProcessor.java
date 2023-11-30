@@ -13,12 +13,15 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
+import tradeprocessorrefactor.CSVReader;
+import tradeprocessorrefactor.DataInput;
 import tradeprocessorrefactor.TradeRecord;
 
 /**
  *
  * @author Sam
  */
+
 public class TradeProcessor {
     /*
     1. Reading all the rows from the csv files
@@ -32,12 +35,8 @@ public class TradeProcessor {
             throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         // Part 1
         System.out.println("Start");
-        BufferedReader myReader = new BufferedReader(new FileReader("trades.csv"));
-        List<String> lines = new ArrayList<>();
-        String inputLine = myReader.readLine();
-        while ((inputLine = myReader.readLine()) != null) {
-            lines.add(inputLine);
-        }
+        DataInput input = new CSVReader();
+        List<String> lines = input.getData();
 
         List<TradeRecord> trades = new ArrayList<>();
         
