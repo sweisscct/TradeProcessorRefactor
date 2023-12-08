@@ -8,11 +8,7 @@ package tradeprocessorrefactor;
  *
  * @author Lecturer
  */
-public class DataInputFactory {
-    public DataInput makeDataInput(DataIOTypes inputType) {
-        switch (inputType) {
-            case CSV : return new CSVReader();
-            default: return null;
-        }
-    }
+public enum DataIOTypes {
+    CSV,
+    DATABASE
 }

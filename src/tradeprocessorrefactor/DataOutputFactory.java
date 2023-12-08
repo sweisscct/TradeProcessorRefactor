@@ -8,7 +8,11 @@ package tradeprocessorrefactor;
  *
  * @author Lecturer
  */
-public enum DataInputTypes {
-    CSV,
-    DATABSE
+public class DataOutputFactory {
+    public DataOutput makeDataOutput(DataIOTypes type) {
+        switch (type) {
+            case DATABASE : return new DatabaseOutput();
+            default : return null;
+        }
+    }
 }

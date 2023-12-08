@@ -16,8 +16,9 @@ import java.util.List;
 import tradeprocessorrefactor.CSVReader;
 import tradeprocessorrefactor.DataInput;
 import tradeprocessorrefactor.DataInputFactory;
-import tradeprocessorrefactor.DataInputTypes;
+import tradeprocessorrefactor.DataIOTypes;
 import tradeprocessorrefactor.DataOutput;
+import tradeprocessorrefactor.DataOutputFactory;
 import tradeprocessorrefactor.Database;
 import tradeprocessorrefactor.DatabaseOutput;
 import tradeprocessorrefactor.TradeParser;
@@ -43,7 +44,7 @@ public class TradeProcessor {
         // Part 1
         System.out.println("Start");
         DataInputFactory dataInputFactory = new DataInputFactory();
-        DataInput input = dataInputFactory.makeDataInput(DataInputTypes.CSV);
+        DataInput input = dataInputFactory.makeDataInput(DataIOTypes.CSV);
         List<String> lines = input.getData();
         
         // Part 2
@@ -53,12 +54,12 @@ public class TradeProcessor {
         List<TradeRecord> trades = tradeParser.parseInputData();
 
             
-           // Part 4
-        boolean dbTableReady = Database.setupDatabase();
-        if (dbTableReady) {
-            // Part 5
-            DataOutput output = new DatabaseOutput();
-            output.saveData(trades);
-        }        
+        // Part 4
+
+
+         // Part 5
+        DataOutputFactory dataOutputFactory = new DataOutputFactory();
+        DataOutput output = dataOutputFactory.makeDataOutput(DataIOTypes.DATABASE);
+        output.saveData(trades);     
     }
 }
