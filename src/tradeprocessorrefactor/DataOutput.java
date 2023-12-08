@@ -13,5 +13,5 @@ import java.util.List;
  * @author Lecturer
  */
 public interface DataOutput {
-    public void saveData(ArrayList<TradeRecord> trades) throws IOException;
+    public void saveData(List<TradeRecord> trades) throws IOException;
 }

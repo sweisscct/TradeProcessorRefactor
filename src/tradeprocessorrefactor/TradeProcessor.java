@@ -15,7 +15,11 @@ import java.util.ArrayList;
 import java.util.List;
 import tradeprocessorrefactor.CSVReader;
 import tradeprocessorrefactor.DataInput;
+import tradeprocessorrefactor.DataInputFactory;
+import tradeprocessorrefactor.DataInputTypes;
+import tradeprocessorrefactor.DataOutput;
 import tradeprocessorrefactor.Database;
+import tradeprocessorrefactor.DatabaseOutput;
 import tradeprocessorrefactor.TradeParser;
 import tradeprocessorrefactor.TradeRecord;
 import tradeprocessorrefactor.Validator;
@@ -38,7 +42,8 @@ public class TradeProcessor {
             throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         // Part 1
         System.out.println("Start");
-        DataInput input = new CSVReader();
+        DataInputFactory dataInputFactory = new DataInputFactory();
+        DataInput input = dataInputFactory.makeDataInput(DataInputTypes.CSV);
         List<String> lines = input.getData();
         
         // Part 2
@@ -51,16 +56,9 @@ public class TradeProcessor {
            // Part 4
         boolean dbTableReady = Database.setupDatabase();
         if (dbTableReady) {
-            
-        }
-
-               // Part 5
-
-            }
-            System.out.println("Sucessful");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+            // Part 5
+            DataOutput output = new DatabaseOutput();
+            output.saveData(trades);
+        }        
     }
 }

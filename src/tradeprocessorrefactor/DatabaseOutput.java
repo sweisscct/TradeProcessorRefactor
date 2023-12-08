@@ -10,6 +10,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.List;
 import static tradeprocessorrefactor.Database.DB_URL;
 import static tradeprocessorrefactor.Database.PASS;
 import static tradeprocessorrefactor.Database.USER;
@@ -20,7 +21,7 @@ import static tradeprocessorrefactor.Database.USER;
  */
 public class DatabaseOutput extends Database implements DataOutput {
     @Override
-    public void saveData(ArrayList<TradeRecord> trades) throws IOException {
+    public void saveData(List<TradeRecord> trades) throws IOException {
         try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
         Statement stmt = conn.createStatement();) {
             String sql;
