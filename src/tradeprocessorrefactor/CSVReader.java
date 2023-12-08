@@ -23,6 +23,7 @@ public class CSVReader implements DataInput  {
         myReader = new BufferedReader(new FileReader("trades.csv"));
         String inputLine = myReader.readLine();
         while ((inputLine = myReader.readLine()) != null) {
+            System.out.println("Inputline: " + inputLine);
             lines.add(inputLine);
         }
         return lines;

@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package aadp21nov;
+package tradeprocessorrefactor;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import tradeprocessorrefactor.CSVReader;
+import tradeprocessorrefactor.DataIOMenu;
 import tradeprocessorrefactor.DataInput;
 import tradeprocessorrefactor.DataInputFactory;
 import tradeprocessorrefactor.DataIOTypes;
@@ -39,12 +40,14 @@ public class TradeProcessor {
     5. Inserting trades into database
     */
     
-    public void ProcessTrades()
+    public void processTrades()
             throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         // Part 1
         System.out.println("Start");
         DataInputFactory dataInputFactory = new DataInputFactory();
-        DataInput input = dataInputFactory.makeDataInput(DataIOTypes.CSV);
+        DataIOMenu ioMenu = new DataIOMenu();
+        DataIOTypes type = ioMenu.makeMenu("Where do you want to get the data from?");
+        DataInput input = dataInputFactory.makeDataInput(type);
         List<String> lines = input.getData();
         
         // Part 2
@@ -59,7 +62,8 @@ public class TradeProcessor {
 
          // Part 5
         DataOutputFactory dataOutputFactory = new DataOutputFactory();
-        DataOutput output = dataOutputFactory.makeDataOutput(DataIOTypes.DATABASE);
+        type = ioMenu.makeMenu("Where do you want to save the data to?");
+        DataOutput output = dataOutputFactory.makeDataOutput(type);
         output.saveData(trades);     
     }
 }

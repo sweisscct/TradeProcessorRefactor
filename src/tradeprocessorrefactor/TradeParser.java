@@ -13,7 +13,7 @@ import java.util.List;
  */
 public class TradeParser {
     private List<String> inputData;
-    private ArrayList<TradeRecord> parsedTrades;
+    private ArrayList<TradeRecord> parsedTrades = new ArrayList<>();
     private Validator validator = new Validator();
 
     public TradeParser(List<String> inputData) {
@@ -23,6 +23,7 @@ public class TradeParser {
     public ArrayList<TradeRecord> parseInputData() {
         for (String line : inputData) {
             String[] fields = line.split(",");
+            System.out.println(fields[0]);
             
             if (!validator.validateDataInput(fields)) continue;
             

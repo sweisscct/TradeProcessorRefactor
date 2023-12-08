@@ -3,7 +3,8 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Main.java to edit this template
  */
 package tradeprocessorrefactor;
-
+import java.io.IOException;
+import tradeprocessorrefactor.TradeProcessor;
 /**
  *
  * @author Lecturer
@@ -30,8 +31,10 @@ public class TradeProcessorRefactor {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException, ClassNotFoundException, InstantiationException, IllegalAccessException {
         // TODO code application logic here
+        TradeProcessor tradeProcessor = new TradeProcessor();
+        tradeProcessor.processTrades();
     }
     
 }
