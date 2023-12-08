@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import tradeprocessorrefactor.CSVReader;
 import tradeprocessorrefactor.DataInput;
+import tradeprocessorrefactor.Database;
 import tradeprocessorrefactor.TradeParser;
 import tradeprocessorrefactor.TradeRecord;
 import tradeprocessorrefactor.Validator;
@@ -48,30 +49,13 @@ public class TradeProcessor {
 
             
            // Part 4
-        Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
-        String DB_URL = "jdbc:mysql://localhost/trades";
-        String USER = "aadp2023";
-        String PASS = "aadp2023";
-
-        try (Connection conn = DriverManager.getConnection(DB_URL, USER, PASS);
-                Statement stmt = conn.createStatement();) {
-            String sql;
-            sql = "CREATE TABLE IF NOT EXISTS trades " +
-                    "(id INTEGER not NULL AUTO_INCREMENT, " +
-                    " sourceCurrencyCode VARCHAR(255), " +
-                    " destinationCurrencyCode VARCHAR(255), " +
-                    " tradeAmount INTEGER, " +
-                    " tradePrice DOUBLE, " +
-                    " PRIMARY KEY ( id ));";
-            stmt.executeUpdate(sql);
-            System.out.println("Created table in given database...");
+        boolean dbTableReady = Database.setupDatabase();
+        if (dbTableReady) {
+            
+        }
 
                // Part 5
-            for (TradeRecord trade : trades) {
-                sql = String.format(
-                        "INSERT INTO trades (sourceCurrencyCode, destinationCurrencyCode, tradeAmount, tradePrice) VALUES ('%s', '%s', %d, %f);",
-                        trade.sourceCurrencyCode, trade.destinationCurrencyCode, trade.tradeAmount, trade.tradePrice);
-                stmt.executeUpdate(sql);
+
             }
             System.out.println("Sucessful");
 
