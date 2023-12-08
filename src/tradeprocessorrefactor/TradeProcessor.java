@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import tradeprocessorrefactor.CSVReader;
 import tradeprocessorrefactor.DataInput;
+import tradeprocessorrefactor.TradeParser;
 import tradeprocessorrefactor.TradeRecord;
 import tradeprocessorrefactor.Validator;
 
@@ -38,25 +39,14 @@ public class TradeProcessor {
         System.out.println("Start");
         DataInput input = new CSVReader();
         List<String> lines = input.getData();
-
-        List<TradeRecord> trades = new ArrayList<>();
         
         // Part 2
-//        lines.forEach(line -> {
-        for (String line : lines) {
-            String[] fields = line.split(",");
-            Validator validator = new Validator();
-            if (!validator.validateDataInput(fields)) continue;
+        // Part 3
+        TradeParser tradeParser = new TradeParser(lines);
+        // Validates before parsing
+        List<TradeRecord> trades = tradeParser.parseInputData();
+
             
-            // Part 3
-            String sourceCurrencyCode = fields[0].substring(0, 3);
-            String destinationCurrencyCode = fields[0].substring(3, 6);
-
-            TradeRecord trade = new TradeRecord(sourceCurrencyCode, destinationCurrencyCode, tradeAmount, tradePrice);
-            trades.add(trade);
-//        });
-        }
-
            // Part 4
         Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
         String DB_URL = "jdbc:mysql://localhost/trades";
